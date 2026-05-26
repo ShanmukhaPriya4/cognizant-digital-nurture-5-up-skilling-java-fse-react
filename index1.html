@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Local Community Event Portal</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        /* =========================
+           Universal Selector Reset
+        ========================== */
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        /* =========================
+           Body Styles
+        ========================== */
+        body{
+            font-family:'Poppins', sans-serif;
+
+            /* Background Image with fallback color */
+            background-color:#f4f4f4;
+            background-image:url('https://images.unsplash.com/photo-1494526585095-c41746248156');
+            background-size:cover;
+            background-repeat:no-repeat;
+            background-attachment:fixed;
+
+            color:#222;
+            line-height:1.8;
+            padding:20px;
+        }
+
+        /* =========================
+           Header Styles
+        ========================== */
+        #mainHeader{
+            background:linear-gradient(to right, #007BFF, #00C6FF);
+            color:white;
+            padding:20px;
+            text-align:center;
+            margin-bottom:20px;
+            border-radius:10px;
+        }
+
+        /* =========================
+           Element Selector
+        ========================== */
+        h2{
+            font-size:32px;
+            margin-bottom:15px;
+            text-transform:uppercase;
+            letter-spacing:2px;
+        }
+
+        /* =========================
+           Grouping Selector
+        ========================== */
+        h3,p{
+            color:rgba(0,0,0,0.8);
+        }
+
+        /* =========================
+           Navigation Menu Styles
+        ========================== */
+        .navMenu{
+            list-style-type:none;
+            list-style-position:inside;
+            margin-top:15px;
+        }
+
+        .navMenu li{
+            display:inline-block;
+            margin:10px;
+            padding:10px;
+        }
+
+        /* =========================
+           Link Styles
+        ========================== */
+        a:link{
+            color:white;
+            text-decoration:none;
+        }
+
+        a:hover{
+            color:yellow;
+        }
+
+        a:active{
+            color:red;
+        }
+
+        a:visited{
+            color:#ddd;
+        }
+
+        /* =========================
+           Event Section Layout
+        ========================== */
+        .eventSection{
+            display:flex;
+            gap:20px;
+            flex-wrap:wrap;
+            margin-top:20px;
+        }
+
+        /* =========================
+           Event Card Styles
+        ========================== */
+        .eventCard{
+            background-color:rgba(255,255,255,0.9);
+            border:2px solid #007BFF;
+            padding:20px;
+            margin:10px;
+            width:300px;
+            border-radius:10px;
+            outline:2px dashed gray;
+        }
+
+        /* =========================
+           Typography Styles
+        ========================== */
+        .eventCard p{
+            text-align:justify;
+            font-size:15px;
+            font-style:italic;
+            font-weight:400;
+            line-height:1.7;
+            letter-spacing:1px;
+        }
+
+        /* =========================
+           CTA Button Styles
+        ========================== */
+        .cta-button{
+            background-color:#007BFF;
+            color:white;
+            border:none;
+            padding:12px 20px;
+            margin-top:10px;
+            cursor:pointer;
+            border-radius:5px;
+            font-size:16px;
+        }
+
+        /* =========================
+           Table Styles
+        ========================== */
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+            background:white;
+        }
+
+        th,td{
+            border:1px solid #ccc;
+            padding:12px;
+            text-align:center;
+        }
+
+        th{
+            background-color:#007BFF;
+            color:white;
+        }
+
+        /* Zebra Striping */
+        tr:nth-child(even){
+            background-color:#f2f2f2;
+        }
+
+        /* =========================
+           Form Styles
+        ========================== */
+        form{
+            margin-top:20px;
+        }
+
+        .focusField{
+            display:block;
+            margin:10px 0;
+            padding:10px;
+            width:300px;
+        }
+
+        /* Outline for Selected Fields */
+        .focusField:focus{
+            outline:3px solid orange;
+        }
+
+        /* =========================
+           Multi Column Layout
+        ========================== */
+        .bulletin{
+            background:white;
+            padding:20px;
+            margin-top:20px;
+
+            column-count:2;
+            column-gap:30px;
+            column-rule:1px solid gray;
+        }
+
+        /* =========================
+           Visibility Examples
+        ========================== */
+
+        /* Hidden but space remains */
+        .hiddenBox{
+            visibility:hidden;
+        }
+
+        /* Completely removed */
+        .noneBox{
+            display:none;
+        }
+
+        /* =========================
+           Responsive Design
+        ========================== */
+        @media screen and (max-width:768px){
+
+            body{
+                font-size:14px;
+                padding:10px;
+            }
+
+            h2{
+                font-size:22px;
+            }
+
+            .navMenu li{
+                display:block;
+                margin:5px 0;
+            }
+
+            .eventSection{
+                flex-direction:column;
+                align-items:center;
+            }
+
+            .eventCard{
+                width:90%;
+            }
+
+            .bulletin{
+                column-count:1;
+            }
+
+            img{
+                width:80vw;
+                height:auto;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Inline CSS Example -->
+    <h1 style="color:red;">
+        Welcome to Local Community Event Portal
+    </h1>
+
+    <!-- Header Section -->
+    <header id="mainHeader">
+
+        <h2>Community Events & Activities</h2>
+
+        <!-- Navigation Menu -->
+        <nav>
+            <ul class="navMenu">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Events</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <!-- Event Cards -->
+    <section class="eventSection">
+
+        <div class="eventCard">
+            <h3>Music Festival</h3>
+
+            <p>
+                Enjoy live performances, food stalls, and cultural
+                programs with your community members.
+            </p>
+        </div>
+
+        <div class="eventCard hiddenBox">
+            <h3>Art Workshop</h3>
+
+            <p>
+                Learn painting, sketching, and creative design
+                from local artists.
+            </p>
+        </div>
+
+        <div class="eventCard noneBox">
+            <h3>Hidden Event</h3>
+
+            <p>
+                This card uses display:none property.
+            </p>
+        </div>
+
+    </section>
+
+    <!-- Bulletin Section -->
+    <section class="bulletin">
+
+        <h2>Community Bulletin</h2>
+
+        <p>
+            The city council has announced several new programs
+            for improving community engagement. Residents are
+            encouraged to participate in cultural events,
+            workshops, sports activities, and volunteering
+            opportunities. Weekly cleanup drives, educational
+            seminars, and health awareness camps are being
+            organized to strengthen neighborhood relationships
+            and improve public well-being. The portal will
+            continue to provide regular updates regarding
+            upcoming activities and public services available
+            in your area.
+        </p>
+
+    </section>
+
+    <!-- Table Section -->
+    <section>
+
+        <h2>Upcoming Events Schedule</h2>
+
+        <table>
+
+            <tr>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Location</th>
+            </tr>
+
+            <tr>
+                <td>Music Festival</td>
+                <td>12 June</td>
+                <td>City Park</td>
+            </tr>
+
+            <tr>
+                <td>Food Carnival</td>
+                <td>18 June</td>
+                <td>Main Street</td>
+            </tr>
+
+            <tr>
+                <td>Art Workshop</td>
+                <td>22 June</td>
+                <td>Community Hall</td>
+            </tr>
+
+        </table>
+
+    </section>
+
+    <!-- Registration Form -->
+    <section>
+
+        <h2>Register for Events</h2>
+
+        <form>
+
+            <input
+                type="text"
+                placeholder="Enter Name"
+                class="focusField"
+            >
+
+            <input
+                type="email"
+                placeholder="Enter Email"
+                class="focusField"
+            >
+
+            <button class="cta-button">
+                Register
+            </button>
+
+        </form>
+
+    </section>
+
+</body>
+</html>
