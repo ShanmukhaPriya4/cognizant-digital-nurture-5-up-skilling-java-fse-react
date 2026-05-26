@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Local Community Event Portal</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+
+        /* =========================
+           Global Styles
+        ========================== */
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins', sans-serif;
+            background:#f4f4f4;
+            padding:20px;
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:20px;
+            color:#007BFF;
+        }
+
+        /* =========================
+           Search and Filter
+        ========================== */
+        .controls{
+            display:flex;
+            gap:15px;
+            margin-bottom:20px;
+            flex-wrap:wrap;
+        }
+
+        input, select, button{
+            padding:10px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        button{
+            background:#007BFF;
+            color:white;
+            cursor:pointer;
+            border:none;
+        }
+
+        /* =========================
+           Event Cards
+        ========================== */
+        #eventContainer{
+            display:flex;
+            flex-wrap:wrap;
+            gap:20px;
+        }
+
+        .eventCard{
+            background:white;
+            width:300px;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .eventCard h3{
+            color:#007BFF;
+            margin-bottom:10px;
+        }
+
+        .eventCard p{
+            margin-bottom:8px;
+        }
+
+        /* =========================
+           Form Section
+        ========================== */
+        .formSection{
+            margin-top:40px;
+            background:white;
+            padding:20px;
+            border-radius:10px;
+        }
+
+        .error{
+            color:red;
+            font-size:14px;
+        }
+
+        .success{
+            color:green;
+            margin-top:10px;
+        }
+
+        /* =========================
+           Loading Spinner
+        ========================== */
+        #loading{
+            display:none;
+            font-size:20px;
+            color:#007BFF;
+            margin:20px 0;
+        }
+
+        /* =========================
+           Responsive Design
+        ========================== */
+        @media(max-width:768px){
+
+            #eventContainer{
+                flex-direction:column;
+                align-items:center;
+            }
+
+            .controls{
+                flex-direction:column;
+            }
+
+            .eventCard{
+                width:90%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>Local Community Event Portal</h1>
+
+    <!-- Search & Filter -->
+    <div class="controls">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search event"
+        >
+
+        <select id="categoryFilter">
+            <option value="All">All Categories</option>
+            <option value="Music">Music</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Sports">Sports</option>
+        </select>
+
+        <button id="showEventsBtn">
+            Show Events
+        </button>
+
+    </div>
+
+    <!-- Loading -->
+    <div id="loading">
+        Loading events...
+    </div>
+
+    <!-- Event Container -->
+    <div id="eventContainer"></div>
+
+    <!-- Registration Form -->
+    <div class="formSection">
+
+        <h2>Register for Event</h2>
+
+        <form id="registrationForm">
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter Name"
+            >
+            <br><br>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter Email"
+            >
+            <br><br>
+
+            <select name="selectedEvent">
+                <option value="">Select Event</option>
+                <option value="Music Festival">Music Festival</option>
+                <option value="Baking Workshop">Baking Workshop</option>
+                <option value="Football Match">Football Match</option>
+            </select>
+
+            <br><br>
+
+            <button id="registerBtn">
+                Register
+            </button>
+
+            <p class="error" id="formError"></p>
+            <p class="success" id="successMessage"></p>
+
+        </form>
+
+    </div>
+
+    <script>
+
+        /* =====================================
+           1. JavaScript Basics & Setup
+        ====================================== */
+
+        console.log("Welcome to the Community Portal");
+
+        window.onload = () => {
+            alert("Page fully loaded");
+        };
+
+        /* =====================================
+           2. Data Types and Operators
+        ====================================== */
+
+        const portalName = "Community Portal";
+        const launchDate = "2026";
+
+        let totalSeats = 50;
+
+        console.log(`${portalName} launched in ${launchDate}`);
+
+        totalSeats++;
+
+        console.log("Updated Seats:", totalSeats);
+
+        /* =====================================
+           5. Objects and Prototypes
+        ====================================== */
+
+        class Event {
+
+            constructor(name, category, date, seats, location){
+
+                this.name = name;
+                this.category = category;
+                this.date = date;
+                this.seats = seats;
+                this.location = location;
+            }
+        }
+
+        Event.prototype.checkAvailability = function(){
+
+            return this.seats > 0
+                ? "Seats Available"
+                : "Full Event";
+        };
+
+        /* =====================================
+           6. Arrays and Methods
+        ====================================== */
+
+        let events = [
+
+            new Event(
+                "Music Festival",
+                "Music",
+                "2026-06-10",
+                10,
+                "City Park"
+            ),
+
+            new Event(
+                "Baking Workshop",
+                "Workshop",
+                "2026-06-15",
+                5,
+                "Community Hall"
+            ),
+
+            new Event(
+                "Football Match",
+                "Sports",
+                "2024-01-01",
+                0,
+                "Sports Ground"
+            )
+        ];
+
+        // Add new event using push
+        events.push(
+            new Event(
+                "Dance Show",
+                "Music",
+                "2026-07-01",
+                20,
+                "Open Stage"
+            )
+        );
+
+        // Filter music events
+        const musicEvents = events.filter(
+            event => event.category === "Music"
+        );
+
+        console.log("Music Events:", musicEvents);
+
+        // Map event names
+        const formattedEvents = events.map(
+            event => `Workshop on ${event.name}`
+        );
+
+        console.log(formattedEvents);
+
+        /* =====================================
+           4. Functions and Closures
+        ====================================== */
+
+        function addEvent(event){
+
+            events.push(event);
+        }
+
+        function registerUser(eventName){
+
+            try{
+
+                const event = events.find(
+                    e => e.name === eventName
+                );
+
+                if(!event){
+                    throw new Error("Event not found");
+                }
+
+                if(event.seats <= 0){
+                    throw new Error("No seats available");
+                }
+
+                event.seats--;
+
+                displayEvents(events);
+
+                alert("Registration successful");
+
+            }catch(error){
+
+                console.error(error.message);
+                alert(error.message);
+            }
+        }
+
+        function filterEventsByCategory(
+            category,
+            callback
+        ){
+
+            const filtered = category === "All"
+                ? events
+                : events.filter(
+                    event => event.category === category
+                );
+
+            callback(filtered);
+        }
+
+        // Closure Example
+        function registrationTracker(){
+
+            let count = 0;
+
+            return function(){
+
+                count++;
+
+                console.log(
+                    `Total registrations: ${count}`
+                );
+            };
+        }
+
+        const trackMusicRegistration =
+            registrationTracker();
+
+        /* =====================================
+           7. DOM Manipulation
+        ====================================== */
+
+        const eventContainer =
+            document.querySelector("#eventContainer");
+
+        function displayEvents(eventList){
+
+            eventContainer.innerHTML = "";
+
+            eventList.forEach(event => {
+
+                // 3. Conditionals
+                if(
+                    new Date(event.date) < new Date()
+                    || event.seats <= 0
+                ){
+                    return;
+                }
+
+                const card =
+                    document.createElement("div");
+
+                card.classList.add("eventCard");
+
+                card.innerHTML = `
+                    <h3>${event.name}</h3>
+
+                    <p>
+                        Category:
+                        ${event.category}
+                    </p>
+
+                    <p>
+                        Date:
+                        ${event.date}
+                    </p>
+
+                    <p>
+                        Location:
+                        ${event.location}
+                    </p>
+
+                    <p>
+                        Seats:
+                        ${event.seats}
+                    </p>
+
+                    <p>
+                        ${event.checkAvailability()}
+                    </p>
+
+                    <button
+                        onclick="registerUser('${event.name}')"
+                    >
+                        Register
+                    </button>
+                `;
+
+                eventContainer.appendChild(card);
+            });
+        }
+
+        displayEvents(events);
+
+        /* =====================================
+           8. Event Handling
+        ====================================== */
+
+        // onchange filter
+        document
+            .querySelector("#categoryFilter")
+            .onchange = function(){
+
+                filterEventsByCategory(
+                    this.value,
+                    displayEvents
+                );
+            };
+
+        // keydown search
+        document
+            .querySelector("#searchInput")
+            .addEventListener("keydown", function(){
+
+                const value =
+                    this.value.toLowerCase();
+
+                const filtered =
+                    events.filter(event =>
+                        event.name
+                        .toLowerCase()
+                        .includes(value)
+                    );
+
+                displayEvents(filtered);
+            });
+
+        /* =====================================
+           9. Async JS / Promise / Async Await
+        ====================================== */
+
+        const mockAPI =
+            "https://jsonplaceholder.typicode.com/posts";
+
+        // Promise with then/catch
+        function fetchEvents(){
+
+            document
+                .querySelector("#loading")
+                .style.display = "block";
+
+            fetch(mockAPI)
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    console.log(
+                        "Fetched data:",
+                        data.slice(0,3)
+                    );
+
+                    document
+                        .querySelector("#loading")
+                        .style.display = "none";
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    document
+                        .querySelector("#loading")
+                        .style.display = "none";
+                });
+        }
+
+        fetchEvents();
+
+        // Async Await
+        async function fetchEventsAsync(){
+
+            try{
+
+                const response =
+                    await fetch(mockAPI);
+
+                const data =
+                    await response.json();
+
+                console.log(
+                    "Async/Await Data:",
+                    data.slice(0,2)
+                );
+
+            }catch(error){
+
+                console.error(error);
+            }
+        }
+
+        fetchEventsAsync();
+
+        /* =====================================
+           10. Modern JavaScript Features
+        ====================================== */
+
+        function greetUser(
+            username = "Guest"
+        ){
+
+            console.log(
+                `Welcome ${username}`
+            );
+        }
+
+        greetUser();
+
+        // Destructuring
+        const {
+            name,
+            category,
+            seats
+        } = events[0];
+
+        console.log(
+            name,
+            category,
+            seats
+        );
+
+        // Spread operator
+        const clonedEvents = [...events];
+
+        console.log(clonedEvents);
+
+        /* =====================================
+           11. Working with Forms
+        ====================================== */
+
+        document
+            .querySelector("#registrationForm")
+
+            .addEventListener(
+                "submit",
+
+                function(event){
+
+                    event.preventDefault();
+
+                    console.log(
+                        "Form submission started"
+                    );
+
+                    const form =
+                        event.target;
+
+                    const username =
+                        form.elements["username"]
+                        .value;
+
+                    const email =
+                        form.elements["email"]
+                        .value;
+
+                    const selectedEvent =
+                        form.elements["selectedEvent"]
+                        .value;
+
+                    const error =
+                        document.querySelector(
+                            "#formError"
+                        );
+
+                    error.textContent = "";
+
+                    if(
+                        username === ""
+                        || email === ""
+                        || selectedEvent === ""
+                    ){
+
+                        error.textContent =
+                            "All fields are required";
+
+                        return;
+                    }
+
+                    console.log({
+                        username,
+                        email,
+                        selectedEvent
+                    });
+
+                    submitRegistration({
+                        username,
+                        email,
+                        selectedEvent
+                    });
+                }
+            );
+
+        /* =====================================
+           12. AJAX & Fetch API
+        ====================================== */
+
+        function submitRegistration(userData){
+
+            console.log(
+                "Sending registration...",
+                userData
+            );
+
+            setTimeout(() => {
+
+                fetch(mockAPI, {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                        "application/json"
+                    },
+
+                    body:JSON.stringify(userData)
+                })
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    console.log(
+                        "Server Response:",
+                        data
+                    );
+
+                    document
+                        .querySelector(
+                            "#successMessage"
+                        )
+
+                        .textContent =
+                            "Registration Successful";
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    document
+                        .querySelector(
+                            "#formError"
+                        )
+
+                        .textContent =
+                            "Registration Failed";
+                });
+
+            }, 2000);
+        }
+
+        /* =====================================
+           13. Debugging & Testing
+        ====================================== */
+
+        console.log(
+            "Use DevTools Console and Network tab"
+        );
+
+        console.log(
+            "Inspect variables and fetch payload"
+        );
+
+        /* =====================================
+           14. jQuery
+        ====================================== */
+
+        $("#registerBtn").click(function(){
+
+            $(".eventCard").fadeOut(500);
+
+            $(".eventCard").fadeIn(500);
+        });
+
+        console.log(
+            "Frameworks like React/Vue help build reusable components and improve state management."
+        );
+
+        /* =====================================
+           Object.entries Example
+        ====================================== */
+
+        Object.entries(events[0]).forEach(
+            ([key, value]) => {
+
+                console.log(key, value);
+            }
+        );
+
+    </script>
+
+</body>
+</html>
